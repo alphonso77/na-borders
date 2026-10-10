@@ -1,0 +1,489 @@
+:root {
+  --ground: #f4f5f1;
+  --ink: #1f2a24;
+  --ink-2: #3a463f;
+  --muted: #4e5a53;
+  --rule: #c9cfc7;
+  --field-border: #aeb7ae;
+  --chip: #e6e9e3;
+  --surface: #ffffff;
+  --accent: #9a2b1e;
+  --accent-ink: #6e1d13;
+  --water: #cbd9dc;
+  --country-line: #2f3d35;
+  --admin1-line: #6f7e74;
+  --shadow: 0 8px 24px rgba(31, 42, 36, 0.18);
+
+  --serif: 'Newsreader', Georgia, serif;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+}
+a:hover {
+  color: var(--accent-ink);
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.muted {
+  color: var(--muted);
+}
+.small {
+  font-size: 13px;
+}
+
+/* ---------- Layout ---------- */
+
+.app {
+  display: flex;
+  height: 100dvh;
+}
+
+.panel {
+  width: 360px;
+  flex-shrink: 0;
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-right: 1px solid var(--rule);
+  background: var(--ground);
+  overflow-y: auto;
+}
+
+.map-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background: var(--water);
+}
+
+#map {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- Panel ---------- */
+
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.brand {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.field-label {
+  display: block;
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.search {
+  position: relative;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 14px;
+  background: var(--surface);
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+  color: var(--muted);
+}
+
+.search-box:focus-within {
+  border-color: var(--ink);
+}
+
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+}
+
+.search-box input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.search-results li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.search-results li[aria-selected='true'],
+.search-results li:hover {
+  background: var(--chip);
+}
+
+.search-results .empty {
+  cursor: default;
+  color: var(--muted);
+  font-size: 14px;
+}
+.search-results .empty:hover {
+  background: none;
+}
+
+.layers {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.layers legend {
+  margin-bottom: 10px;
+}
+
+.segments {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  background: var(--chip);
+  border-radius: 10px;
+}
+
+.segments button {
+  flex: 1;
+  height: 36px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.segments button[aria-pressed='true'] {
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(31, 42, 36, 0.18);
+  font-weight: 600;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+  cursor: pointer;
+}
+
+.toggle input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--ink);
+}
+
+.toggle span {
+  flex: 1;
+}
+
+.swatch-country {
+  stroke: var(--country-line);
+  stroke-width: 2.4;
+}
+.swatch-admin1 {
+  stroke: var(--admin1-line);
+  stroke-width: 1.4;
+  stroke-dasharray: 4 3;
+}
+
+/* ---------- Details ---------- */
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+}
+
+.details-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.details h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--accent);
+}
+
+.details h2.prompt {
+  font-size: 26px;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.details p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.kind {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 18px;
+  background: var(--chip);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 16px;
+}
+
+.facts dt,
+.sub-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.facts dd {
+  margin: 2px 0 0;
+  font-weight: 500;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--field-border);
+  border-radius: 18px;
+  background: var(--surface);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--ink);
+}
+
+.chip small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.primary {
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.credit {
+  margin-top: auto;
+}
+
+/* ---------- Map chrome ---------- */
+
+.tooltip {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  padding: 6px 10px;
+  background: var(--surface);
+  border: 1px solid var(--field-border);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(31, 42, 36, 0.14);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.tooltip small {
+  margin-left: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.maplibregl-ctrl-group {
+  border-radius: 10px !important;
+  box-shadow: 0 2px 8px rgba(31, 42, 36, 0.14) !important;
+}
+
+.maplibregl-ctrl-group button {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.maplibregl-ctrl-scale {
+  border-color: var(--ink-2) !important;
+  color: var(--ink-2) !important;
+  background: rgba(244, 245, 241, 0.8) !important;
+  font-family: var(--sans);
+}
+
+.maplibregl-ctrl-attrib {
+  font-family: var(--sans);
+}
+
+/* ---------- Phone: map on top, panel as a bottom sheet ---------- */
+
+@media (max-width: 760px) {
+  .app {
+    flex-direction: column-reverse;
+  }
+
+  .map-wrap {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .panel {
+    width: auto;
+    max-height: 48dvh;
+    padding: 16px 16px calc(20px + env(safe-area-inset-bottom));
+    gap: 18px;
+    border-right: 0;
+    border-top: 1px solid var(--rule);
+    border-radius: 20px 20px 0 0;
+    margin-top: -20px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 -6px 20px rgba(31, 42, 36, 0.16);
+  }
+
+  .brand {
+    font-size: 24px;
+  }
+
+  .search-box input {
+    font-size: 16px; /* avoid iOS zoom on focus */
+  }
+
+  /* Selection details first, so they're visible without scrolling the sheet. */
+  .details {
+    order: 1;
+    padding-top: 0;
+    padding-bottom: 18px;
+    border-top: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .layers {
+    order: 2;
+  }
+  .credit {
+    order: 3;
+  }
+
+  /* Lift the bottom map controls clear of the sheet's rounded edge. */
+  .maplibregl-ctrl-bottom-left,
+  .maplibregl-ctrl-bottom-right {
+    bottom: 20px;
+  }
+
+  .details h2 {
+    font-size: 30px;
+  }
+
+  .tooltip {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
